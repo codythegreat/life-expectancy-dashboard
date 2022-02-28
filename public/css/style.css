@@ -24,17 +24,19 @@ header h1 {
 
 .page-selector {
     padding: .5rem 1rem;
-    border-top: 3px solid #ddd;
+    border-top: 3px solid #88a;
     background-color: #335;
     margin: 0 1px 0 1px;
     cursor: pointer;
 }
-.page-selector:hover {
-    background-color: #224;
-}
 
 .page-selector.selected {
-    border-top: 3px solid #88a;
+    background-color: #292949;
+    border-top: 3px solid #ddd;
+}
+
+.page-selector:hover {
+    background-color: #224;
 }
 
 #dash-pages {

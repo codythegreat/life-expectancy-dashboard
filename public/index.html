@@ -16,7 +16,7 @@
         </header>
 
         <div id="page-selectors">
-            <div class="page-selector">Map and Table</div>
+            <div class="page-selector selected">Map and Table</div>
             <div class="page-selector">Chart</div>
         </div>
     </div>
@@ -528,29 +528,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td id="country"></td>
-                        <td id="year_2000"></td>
-                        <td id="year_2001"></td>
-                        <td id="year_2002"></td>
-                        <td id="year_2003"></td>
-                        <td id="year_2004"></td>
-                        <td id="year_2005"></td>
-                        <td id="year_2006"></td>
-                        <td id="year_2007"></td>
-                        <td id="year_2008"></td>
-                        <td id="year_2009"></td>
-                        <td id="year_2010"></td>
-                        <td id="year_2011"></td>
-                        <td id="year_2012"></td>
-                        <td id="year_2013"></td>
-                        <td id="year_2014"></td>
-                        <td id="year_2015"></td>
-                        <td id="year_2016"></td>
-                        <td id="year_2017"></td>
-                        <td id="year_2018"></td>
-                        <td id="year_2019"></td>
-                    </tr>
                 </tbody>
             </table>
         </div>
@@ -565,6 +542,23 @@
 <script>
         var ctx = document.getElementById('chart-js').getContext('2d');
         var myChart = buildChart();
+
+        document.querySelectorAll('.page-selector').forEach(el => 
+            el.addEventListener('click', function(event) {
+                if (event.target.classList.contains('selected')) return;
+                // remove selected class from other page-selector
+                document.querySelector('.page-selector.selected').classList.remove('selected');
+                // add selected class to event.target
+                event.target.classList.add('selected');
+                // change the page
+                let currentPage = document.querySelector('.page:not(.hidden)')
+                let nextPage    = document.querySelector('.page.hidden')
+                currentPage.classList.add('hidden');
+                nextPage.classList.remove('hidden');
+                
+            })
+        );
+
         document.querySelector('#map').addEventListener('click', function(event) {
             let country = (event.target.getAttribute('name')) ? 
               event.target.getAttribute('name') :
@@ -657,11 +651,18 @@
                                         res.push(row.children[i].innerText);
                                     }
                                     return res;
+                                })(),
+                                backgroundColor: (function(){
+                                    let colorStep = 255/30;
+                                    let age = row.children[row.children.length-1].innerText - 54;
+                                    let green = Math.floor(colorStep * age);
+                                    let red = Math.floor(255 - (colorStep * age) );
+                                    return `rgb(${red},${green},64)`;
                                 })()
                             });
                         }
                         return datasets
-                    })()
+                    })(),
                 },
                 options: {
                     scales: {
@@ -669,7 +670,7 @@
                             beginAtZero: true,
                             max: 100
                         }
-                    }
+                    },
                 }
             });
         }
